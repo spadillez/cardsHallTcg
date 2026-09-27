@@ -215,6 +215,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
             <h2 className="mt-2 text-2xl font-semibold">Balcão rápido</h2>
             <p className="mt-3 text-sm text-[var(--foreground-muted)]">{checkedInCount} / {tournament.players.length} jogadores confirmados.</p>
             <input
+              aria-label="Buscar jogador por nome ou Player ID"
               value={playerSearch}
               onChange={(event) => setPlayerSearch(event.target.value)}
               placeholder="Buscar nome ou Player ID"
@@ -245,18 +246,21 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
             </div>
             <div className="mt-5 grid gap-3">
               <input
+                aria-label="Nome do novo jogador"
                 value={registrationForm.name}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, name: event.target.value }))}
                 placeholder="Novo jogador"
                 className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
               />
               <input
+                aria-label="Player ID do novo jogador"
                 value={registrationForm.playerId}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, playerId: event.target.value }))}
                 placeholder="Player ID"
                 className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
               />
               <input
+                aria-label="Data de nascimento do novo jogador"
                 type="date"
                 value={registrationForm.birthDate}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, birthDate: event.target.value }))}

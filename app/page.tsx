@@ -92,11 +92,11 @@ export default function HomePage() {
           </div>
 
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <p className="text-sm uppercase tracking-[0.24em] text-[var(--foreground-muted)]">Comando rápido</p>
+            <p className="text-sm uppercase tracking-[0.24em] text-[var(--foreground-muted)]">Ações disponíveis</p>
             <ul className="mt-4 space-y-3 text-sm text-[var(--foreground-muted)]">
-              <li>Ctrl + K → Search Player / Search Table</li>
-              <li>N → próximo resultado pendente</li>
-              <li>Enter → salvar resultado selecionado</li>
+              <li>Rapid result entry com botões grandes para Scorekeeper</li>
+              <li>Check-in e late registration no modo Organizer</li>
+              <li>Standings públicos em tempo real no evento demo</li>
               <li>Modo público em <code>/event/cardshall-league-challenge</code></li>
             </ul>
           </div>

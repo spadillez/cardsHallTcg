@@ -113,6 +113,8 @@ model Player {
   phone          String?
   nickname       String?
   registrations  TournamentRegistration[]
+  matchesAsPlayerA Match[]               @relation("MatchPlayerA")
+  matchesAsPlayerB Match[]               @relation("MatchPlayerB")
   createdAt      DateTime                @default(now())
   updatedAt      DateTime                @updatedAt
 
@@ -203,6 +205,8 @@ model Match {
   version        Int             @default(1)
   isBye          Boolean         @default(false)
   round          Round           @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  playerA        Player          @relation("MatchPlayerA", fields: [playerAId], references: [id], onDelete: Restrict)
+  playerB        Player?         @relation("MatchPlayerB", fields: [playerBId], references: [id], onDelete: Restrict)
   timeExtensions TimeExtension[]
   penalties      Penalty[]
   judgeCalls     JudgeCall[]

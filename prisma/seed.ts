@@ -4,6 +4,15 @@ import { buildDemoTournament } from "@/lib/tournament/demo-data";
 
 const prisma = new PrismaClient();
 
+function resolveMappedPlayerId(playerIdMap: Map<string, string>, sourcePlayerId: string) {
+  const mappedPlayerId = playerIdMap.get(sourcePlayerId);
+  if (!mappedPlayerId) {
+    throw new Error(`Missing persisted player mapping for ${sourcePlayerId}.`);
+  }
+
+  return mappedPlayerId;
+}
+
 async function main() {
   const ruleset = getDefaultPokemonRuleset();
   const tournament = buildDemoTournament();
@@ -144,9 +153,15 @@ async function main() {
     });
 
     for (const match of round.matches) {
+      const playerAId = resolveMappedPlayerId(playerIdMap, match.playerAId);
+      const playerBId = match.playerBId ? resolveMappedPlayerId(playerIdMap, match.playerBId) : null;
+
       await prisma.match.upsert({
         where: { id: `${createdRound.id}-${match.tableNumber}` },
         update: {
+          tableNumber: match.tableNumber,
+          playerAId,
+          playerBId,
           resultCode: match.resultCode as MatchResultCode,
           isBye: match.isBye,
         },
@@ -154,8 +169,8 @@ async function main() {
           id: `${createdRound.id}-${match.tableNumber}`,
           roundId: createdRound.id,
           tableNumber: match.tableNumber,
-          playerAId: playerIdMap.get(match.playerAId) ?? "",
-          playerBId: match.playerBId ? playerIdMap.get(match.playerBId) ?? null : null,
+          playerAId,
+          playerBId,
           resultCode: match.resultCode as MatchResultCode,
           isBye: match.isBye,
         },

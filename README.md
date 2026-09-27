@@ -8,7 +8,7 @@ Aplicação web em Next.js + TypeScript para operação de torneios competitivos
 - modo Organizer/Scorekeeper com pairings, rapid result entry, standings e balcão de check-in/late registration;
 - página pública do evento em `/event/cardshall-league-challenge`;
 - regras configuráveis em `lib/tournament/rules.ts`;
-- `PairingEngine`, `StandingsEngine` e máquina de estados em `lib/tournament`;
+- utilitários de pairings, standings e máquina de estados em `lib/tournament`;
 - schema Prisma com organizações, torneios, rounds, matches, penalties, judge calls, snapshots e audit log;
 - seed demo para `CardsHall League Challenge` com 32 jogadores fictícios.
 
