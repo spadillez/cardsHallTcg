@@ -157,3 +157,14 @@ test("Fallback rematch pairing still uses each eligible player at most once", ()
 
   assert.equal(seen.size, players.length);
 });
+
+test("Fixed table assignments do not create duplicate table numbers", () => {
+  const tournament = buildDemoTournament();
+  tournament.players[0] = { ...tournament.players[0], fixedTable: 11 };
+  const matches = createRoundMatches(tournament, 4);
+  const tableNumbers = matches.map((match) => match.tableNumber);
+  const uniqueTableNumbers = new Set(tableNumbers);
+
+  assert.equal(tableNumbers.includes(11), true);
+  assert.equal(uniqueTableNumbers.size, tableNumbers.length);
+});

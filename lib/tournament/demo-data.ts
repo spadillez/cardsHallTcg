@@ -126,8 +126,9 @@ export function buildDemoTournament(): Tournament {
 
   const round3Matches = createRoundMatches(tournament, 3).map((match, index) => ({
     ...match,
-    resultCode:
-      match.isBye || index < 10
+    resultCode: match.isBye
+      ? "BYE"
+      : index < 10
         ? (["A_WIN_2_0", "A_WIN_2_1", "B_WIN_2_1", "DRAW"][index % 4] as MatchResultCode)
         : "PENDING",
   }));

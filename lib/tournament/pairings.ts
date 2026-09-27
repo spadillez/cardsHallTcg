@@ -67,15 +67,22 @@ function assignTables(
   const usedTables = new Set<number>();
   const reservedTables = new Set(tournament.ruleset.settings.reservedTables);
   const playersById = new Map(tournament.players.map((entry) => [entry.player.id, entry]));
+  let fallbackTableIndex = 0;
 
-  return pairings.map((pairing, index) => {
+  return pairings.map((pairing) => {
     const playerA = playersById.get(pairing.playerAId);
     const playerB = pairing.playerBId ? playersById.get(pairing.playerBId) : undefined;
     const fixedTable = [playerA?.fixedTable, playerB?.fixedTable].find(
       (tableNumber) => tableNumber && !usedTables.has(tableNumber) && !reservedTables.has(tableNumber),
     );
-    const tableNumber = fixedTable ?? tables[index];
+    while (tables[fallbackTableIndex] && usedTables.has(tables[fallbackTableIndex])) {
+      fallbackTableIndex += 1;
+    }
+    const tableNumber = fixedTable ?? tables[fallbackTableIndex];
     usedTables.add(tableNumber);
+    if (!fixedTable) {
+      fallbackTableIndex += 1;
+    }
     return { ...pairing, tableNumber };
   });
 }

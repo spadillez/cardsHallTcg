@@ -53,7 +53,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
     setTournament((current) => ({
       ...current,
       rounds: current.rounds.map((round) =>
-        round.id !== currentRound.id
+        round.id !== current.rounds[current.rounds.length - 1]?.id
           ? round
           : {
               ...round,
