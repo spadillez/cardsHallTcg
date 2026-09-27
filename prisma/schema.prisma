@@ -213,7 +213,7 @@ model Match {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
-  @@index([roundId, tableNumber])
+  @@unique([roundId, tableNumber])
 }
 
 model Penalty {

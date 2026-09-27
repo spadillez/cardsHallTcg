@@ -118,8 +118,9 @@ function backtrack(
     return null;
   }
 
+  const remainder = rest.filter((entry) => entry.player.id !== fallbackOpponent.player.id);
   return backtrack(
-    rest.slice(1),
+    remainder,
     history,
     [...current, { playerAId: first.player.id, playerBId: fallbackOpponent.player.id, isBye: false }],
   );

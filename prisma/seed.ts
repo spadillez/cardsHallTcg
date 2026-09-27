@@ -1,4 +1,4 @@
-import { PrismaClient, Role, TournamentState, RegistrationStatus, MatchResultCode } from "@prisma/client";
+import { Prisma, PrismaClient, Role, TournamentState, RegistrationStatus, MatchResultCode } from "@prisma/client";
 import { getDefaultPokemonRuleset } from "@/lib/tournament/rules";
 import { buildDemoTournament } from "@/lib/tournament/demo-data";
 
@@ -17,6 +17,7 @@ async function main() {
   const ruleset = getDefaultPokemonRuleset();
   const tournament = buildDemoTournament();
   const playerIdMap = new Map<string, string>();
+  const serializedRulesetSettings = ruleset.settings as unknown as Prisma.InputJsonValue;
 
   const organization = await prisma.organization.upsert({
     where: { slug: "cardshall" },
@@ -60,7 +61,7 @@ async function main() {
       effectiveDate: new Date(ruleset.effectiveDate),
       game: ruleset.game,
       format: ruleset.format,
-      settings: ruleset.settings,
+      settings: serializedRulesetSettings,
     },
     create: {
       id: "cardshall-ruleset-2026-1",
@@ -70,7 +71,7 @@ async function main() {
       effectiveDate: new Date(ruleset.effectiveDate),
       game: ruleset.game,
       format: ruleset.format,
-      settings: ruleset.settings,
+      settings: serializedRulesetSettings,
     },
   });
 

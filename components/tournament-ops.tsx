@@ -214,12 +214,16 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
             <p className="text-sm uppercase tracking-[0.24em] text-[var(--foreground-muted)]">Check-in & Late Registration</p>
             <h2 className="mt-2 text-2xl font-semibold">Balcão rápido</h2>
             <p className="mt-3 text-sm text-[var(--foreground-muted)]">{checkedInCount} / {tournament.players.length} jogadores confirmados.</p>
+            <label htmlFor="player-search" className="mt-4 block text-sm font-medium text-[var(--foreground-muted)]">
+              Buscar jogador
+            </label>
             <input
+              id="player-search"
               aria-label="Buscar jogador por nome ou Player ID"
               value={playerSearch}
               onChange={(event) => setPlayerSearch(event.target.value)}
               placeholder="Buscar nome ou Player ID"
-              className="mt-4 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
+              className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
             />
             <div className="mt-4 max-h-64 space-y-3 overflow-auto pr-1">
               {filteredPlayers.slice(0, 12).map((entry) => (
@@ -245,21 +249,33 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
               ))}
             </div>
             <div className="mt-5 grid gap-3">
+              <label htmlFor="new-player-name" className="text-sm font-medium text-[var(--foreground-muted)]">
+                Nome
+              </label>
               <input
+                id="new-player-name"
                 aria-label="Nome do novo jogador"
                 value={registrationForm.name}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, name: event.target.value }))}
                 placeholder="Novo jogador"
                 className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
               />
+              <label htmlFor="new-player-id" className="text-sm font-medium text-[var(--foreground-muted)]">
+                Player ID
+              </label>
               <input
+                id="new-player-id"
                 aria-label="Player ID do novo jogador"
                 value={registrationForm.playerId}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, playerId: event.target.value }))}
                 placeholder="Player ID"
                 className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
               />
+              <label htmlFor="new-player-birth-date" className="text-sm font-medium text-[var(--foreground-muted)]">
+                Data de nascimento
+              </label>
               <input
+                id="new-player-birth-date"
                 aria-label="Data de nascimento do novo jogador"
                 type="date"
                 value={registrationForm.birthDate}

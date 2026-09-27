@@ -12,7 +12,7 @@ test("Standings calculate points and order players by points then tiebreakers", 
   assert.ok(standings.every((entry) => entry.omw >= 0 && entry.gw >= 0 && entry.ogw >= 0));
 });
 
-test("Pending matches do not affect the live standings snapshot", () => {
+test("Completed results update the live standings snapshot", () => {
   const tournament = buildDemoTournament();
   const before = buildStandings(tournament).map((entry) => ({ id: entry.playerId, points: entry.matchPoints }));
   const pending = tournament.rounds[2].matches.find((match) => match.resultCode === "PENDING");
