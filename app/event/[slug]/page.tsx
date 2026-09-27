@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { buildDemoTournament } from "@/lib/tournament/demo-data";
+import { buildDemoTournament, DEMO_REMAINING_TIME } from "@/lib/tournament/demo-data";
 import { buildStandings } from "@/lib/tournament/standings";
 
 export default async function PublicEventPage({
@@ -27,7 +27,7 @@ export default async function PublicEventPage({
           <span>•</span>
           <span>Round {currentRound.number}</span>
           <span>•</span>
-          <span>Timer 26:31</span>
+          <span>Timer {DEMO_REMAINING_TIME}</span>
         </div>
       </section>
 
@@ -69,7 +69,8 @@ export default async function PublicEventPage({
               <div key={standing.playerId} className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] p-4">
                 {index === 8 ? (
                   <div className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent-secondary)]">
-                    ━━━━━━━━ Top 8 Cut ━━━━━━━━
+                    <span aria-hidden="true">━━━━━━━━ Top 8 Cut ━━━━━━━━</span>
+                    <span className="sr-only">Top 8 Cut</span>
                   </div>
                 ) : null}
                 <div className="flex items-center justify-between gap-3">

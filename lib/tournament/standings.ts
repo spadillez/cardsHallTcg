@@ -26,7 +26,7 @@ function isCompletedMatch(match: Match) {
 
 export function buildStandings(tournament: Tournament, upToRound?: number): StandingRow[] {
   const activePlayers = tournament.players.filter(
-    (entry) => entry.status !== "DISQUALIFIED" && entry.status !== "DROPPED",
+    (entry) => entry.status !== "DISQUALIFIED",
   );
   const rows = new Map<string, InterimRow>();
 

@@ -127,7 +127,11 @@ async function main() {
           playerId: player.id,
         },
       },
-      update: {},
+      update: {
+        status: RegistrationStatus.CHECKED_IN,
+        hadBye: entry.hadBye,
+        fixedTable: entry.fixedTable,
+      },
       create: {
         tournamentId: tournamentRow.id,
         playerId: player.id,
@@ -160,20 +164,17 @@ async function main() {
       const playerBId = match.playerBId ? resolveMappedPlayerId(playerIdMap, match.playerBId) : null;
 
       await prisma.match.upsert({
-        where: {
-          roundId_tableNumber: {
-            roundId: createdRound.id,
-            tableNumber: match.tableNumber,
-          },
-        },
+        where: { id: match.id },
         update: {
+          roundId: createdRound.id,
+          tableNumber: match.tableNumber,
           playerAId,
           playerBId,
           resultCode: match.resultCode as MatchResultCode,
           isBye: match.isBye,
         },
         create: {
-          id: `${createdRound.id}-${match.tableNumber}`,
+          id: match.id,
           roundId: createdRound.id,
           tableNumber: match.tableNumber,
           playerAId,

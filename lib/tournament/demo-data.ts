@@ -44,6 +44,8 @@ const organization: Organization = {
   slug: "cardshall",
 };
 
+export const DEMO_REMAINING_TIME = "26:31";
+
 function buildPlayers(): TournamentPlayer[] {
   return PLAYER_NAMES.map((fullName, index) => ({
     id: `tp-${index + 1}`,
@@ -160,7 +162,7 @@ export function getDashboardData() {
       format: activeTournament.format,
       players: activeTournament.players.length,
       roundLabel: `Rodada ${activeTournament.rounds.length} / ${structure.swissRounds}`,
-      remainingTime: "26:31",
+      remainingTime: DEMO_REMAINING_TIME,
       status: "Em andamento",
       pendingResults: activeTournament.rounds[2].matches.filter((match) => match.resultCode === "PENDING").length,
     },

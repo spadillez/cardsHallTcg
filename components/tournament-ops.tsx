@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { DEMO_REMAINING_TIME } from "@/lib/tournament/demo-data";
 import { buildStandings } from "@/lib/tournament/standings";
 import { getTournamentStructure } from "@/lib/tournament/rules";
 import type { MatchResultCode, Tournament, TournamentPlayer } from "@/lib/tournament/types";
@@ -159,7 +160,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                 <h2 className="mt-2 text-2xl font-semibold">Registrar resultado em poucos cliques</h2>
               </div>
               <div className="rounded-full border border-[var(--border)] px-4 py-2 text-sm text-[var(--foreground-muted)]">
-                Timer da rodada: 26:31
+                Timer da rodada: {DEMO_REMAINING_TIME}
               </div>
             </div>
 
