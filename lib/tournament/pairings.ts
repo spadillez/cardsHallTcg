@@ -165,7 +165,7 @@ export function createRoundMatches(tournament: Tournament, roundNumber: number):
   return generateSwissPairings(tournament).map((pairing, index) => ({
     id: `round-${roundNumber}-match-${index + 1}`,
     roundNumber,
-    tableNumber: pairing.tableNumber,
+    tableNumber: pairing.isBye ? 0 : pairing.tableNumber,
     playerAId: pairing.playerAId,
     playerBId: pairing.playerBId,
     resultCode: pairing.isBye ? "BYE" : "PENDING",

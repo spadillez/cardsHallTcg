@@ -155,16 +155,24 @@ async function main() {
       },
     });
 
-    await prisma.match.deleteMany({
-      where: { roundId: createdRound.id },
-    });
-
     for (const match of round.matches) {
       const playerAId = resolveMappedPlayerId(playerIdMap, match.playerAId);
       const playerBId = match.playerBId ? resolveMappedPlayerId(playerIdMap, match.playerBId) : null;
 
-      await prisma.match.create({
-        data: {
+      await prisma.match.upsert({
+        where: {
+          roundId_tableNumber: {
+            roundId: createdRound.id,
+            tableNumber: match.tableNumber,
+          },
+        },
+        update: {
+          playerAId,
+          playerBId,
+          resultCode: match.resultCode as MatchResultCode,
+          isBye: match.isBye,
+        },
+        create: {
           id: `${createdRound.id}-${match.tableNumber}`,
           roundId: createdRound.id,
           tableNumber: match.tableNumber,

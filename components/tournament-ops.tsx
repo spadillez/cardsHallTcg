@@ -247,7 +247,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
               value={playerSearch}
               onChange={(event) => setPlayerSearch(event.target.value)}
               placeholder="Buscar nome ou Player ID"
-              className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
+              className="mt-2 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
             />
             <div className="mt-4 max-h-64 space-y-3 overflow-auto pr-1">
               {filteredPlayers.slice(0, 12).map((entry) => (
@@ -282,7 +282,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                 value={registrationForm.name}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, name: event.target.value }))}
                 placeholder="Novo jogador"
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
               />
               <label htmlFor="new-player-id" className="text-sm font-medium text-[var(--foreground-muted)]">
                 Player ID
@@ -293,7 +293,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                 value={registrationForm.playerId}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, playerId: event.target.value }))}
                 placeholder="Player ID"
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
               />
               <label htmlFor="new-player-birth-date" className="text-sm font-medium text-[var(--foreground-muted)]">
                 Data de nascimento
@@ -304,7 +304,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                 type="date"
                 value={registrationForm.birthDate}
                 onChange={(event) => setRegistrationForm((current) => ({ ...current, birthDate: event.target.value }))}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)]"
+                className="rounded-2xl border border-[var(--border)] bg-[var(--surface-strong)] px-4 py-3 outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2 focus:ring-offset-[var(--surface)]"
               />
               <button
                 type="button"

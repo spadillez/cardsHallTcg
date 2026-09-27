@@ -70,11 +70,12 @@ function buildPlayers(): TournamentPlayer[] {
 function assignRoundResults(tournament: Tournament, roundNumber: number, pattern: MatchResultCode[]) {
   const round = tournament.rounds.find((entry) => entry.number === roundNumber);
   if (!round) return;
+  const baseTime = new Date(`2026-09-27T1${roundNumber}:10:00.000Z`);
 
   round.matches = round.matches.map((match, index) => ({
     ...match,
     resultCode: match.isBye ? "BYE" : pattern[index % pattern.length],
-    updatedAt: new Date(`2026-09-27T1${roundNumber}:${10 + index}:00.000Z`).toISOString(),
+    updatedAt: new Date(baseTime.getTime() + index * 60_000).toISOString(),
   }));
 
   for (const match of round.matches) {
