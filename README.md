@@ -1,0 +1,2 @@
+# cardsHallTcg
+TCGzin dos cria
