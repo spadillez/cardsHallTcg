@@ -164,7 +164,7 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
 
 function applyPercentages(rows: Map<string, InterimRow>, ruleset: TournamentRuleset) {
   const scoring = ruleset.settings.scoring;
-  const maxMatchPoints = Math.max(scoring.winPoints, scoring.byePoints, 1);
+  const maxMatchPoints = Math.max(scoring.winPoints, 1);
   const opponentMatchWin = new Map<string, number>();
   const opponentGameWin = new Map<string, number>();
 

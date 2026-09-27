@@ -65,3 +65,41 @@ test("BYE awards configured points and counts as a win", () => {
   assert.equal(standings[0].wins, 1);
   assert.equal(standings[0].matchPoints, tournament.ruleset.settings.scoring.byePoints);
 });
+
+test("Double loss records a loss for both players without awarding match points", () => {
+  const tournament = buildDemoTournament();
+  const playerA = tournament.players[0];
+  const playerB = tournament.players[1];
+  const doubleLossTournament: Tournament = {
+    ...tournament,
+    players: [playerA, playerB],
+    rounds: [
+      {
+        id: "round-1",
+        number: 1,
+        startedAt: "2026-09-27T11:00:00.000Z",
+        endsAt: "2026-09-27T11:50:00.000Z",
+        status: "COMPLETED",
+        matches: [
+          {
+            id: "double-loss-match",
+            roundNumber: 1,
+            tableNumber: 11,
+            playerAId: playerA.player.id,
+            playerBId: playerB.player.id,
+            resultCode: "DOUBLE_LOSS",
+            createdAt: "2026-09-27T11:00:00.000Z",
+            updatedAt: "2026-09-27T11:20:00.000Z",
+            isBye: false,
+          },
+        ],
+      },
+    ],
+  };
+
+  const standings = buildStandings(doubleLossTournament);
+  assert.equal(standings[0].matchPoints, tournament.ruleset.settings.scoring.doubleLossPoints);
+  assert.equal(standings[1].matchPoints, tournament.ruleset.settings.scoring.doubleLossPoints);
+  assert.equal(standings[0].losses, 1);
+  assert.equal(standings[1].losses, 1);
+});

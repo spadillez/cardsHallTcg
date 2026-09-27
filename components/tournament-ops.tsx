@@ -91,7 +91,11 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
           return current;
         }
 
-        const nextId = current.players.length + 1;
+        const nextId =
+          current.players.reduce((highest, entry) => {
+            const suffix = Number(entry.id.replace("tp-", ""));
+            return Number.isFinite(suffix) ? Math.max(highest, suffix) : highest;
+          }, 0) + 1;
         return {
           ...current,
           players: [
@@ -108,7 +112,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                 state: "SP",
                 city: "São Paulo",
               },
-              status: "LATE_REGISTRATION",
+              status: "CHECKED_IN",
               checkedInAt: new Date().toISOString(),
               hadBye: false,
               initialMatchPoints: 0,

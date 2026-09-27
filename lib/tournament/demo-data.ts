@@ -51,7 +51,7 @@ function buildPlayers(): TournamentPlayer[] {
       id: `player-${index + 1}`,
       fullName,
       playerId: `${1000001 + index}`,
-      birthDate: `20${90 + (index % 10)}-0${(index % 8) + 1}-15`,
+      birthDate: `${1990 + (index % 10)}-0${(index % 8) + 1}-15`,
       category: "MASTER",
       country: "Brasil",
       state: "SP",

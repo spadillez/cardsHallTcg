@@ -51,8 +51,9 @@ function rankEligiblePlayers(tournament: Tournament) {
 }
 
 function chooseBye(players: TournamentPlayer[]) {
-  const withoutBye = [...players].reverse().find((player) => !player.hadBye);
-  return withoutBye ?? players[players.length - 1];
+  const candidates = players.filter((player) => !player.hadBye);
+  const pool = candidates.length > 0 ? candidates : players;
+  return pool[pool.length - 1];
 }
 
 function canPair(a: TournamentPlayer, b: TournamentPlayer, history: Map<string, Set<string>>) {
