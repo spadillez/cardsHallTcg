@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   const ruleset = getDefaultPokemonRuleset();
   const tournament = buildDemoTournament();
+  const playerIdMap = new Map<string, string>();
 
   const organization = await prisma.organization.upsert({
     where: { slug: "cardshall" },
@@ -42,8 +43,18 @@ async function main() {
     },
   });
 
-  const persistedRuleset = await prisma.tournamentRuleset.create({
-    data: {
+  const persistedRuleset = await prisma.tournamentRuleset.upsert({
+    where: { id: "cardshall-ruleset-2026-1" },
+    update: {
+      name: ruleset.name,
+      version: ruleset.version,
+      effectiveDate: new Date(ruleset.effectiveDate),
+      game: ruleset.game,
+      format: ruleset.format,
+      settings: ruleset.settings,
+    },
+    create: {
+      id: "cardshall-ruleset-2026-1",
       organizationId: organization.id,
       name: ruleset.name,
       version: ruleset.version,
@@ -56,7 +67,12 @@ async function main() {
 
   const tournamentRow = await prisma.tournament.upsert({
     where: { slug: tournament.slug },
-    update: {},
+    update: {
+      venueId: venue.id,
+      rulesetId: persistedRuleset.id,
+      state: TournamentState.ROUND_ACTIVE,
+      startsAt: new Date(`${tournament.date}T10:00:00.000Z`),
+    },
     create: {
       organizationId: organization.id,
       venueId: venue.id,
@@ -90,6 +106,7 @@ async function main() {
         nickname: entry.player.nickname,
       },
     });
+    playerIdMap.set(entry.player.id, player.id);
 
     await prisma.tournamentRegistration.upsert({
       where: {
@@ -137,10 +154,8 @@ async function main() {
           id: `${createdRound.id}-${match.tableNumber}`,
           roundId: createdRound.id,
           tableNumber: match.tableNumber,
-          playerAId: tournament.players.find((entry) => entry.player.id === match.playerAId)?.player.playerId ?? "",
-          playerBId: match.playerBId
-            ? tournament.players.find((entry) => entry.player.id === match.playerBId)?.player.playerId
-            : null,
+          playerAId: playerIdMap.get(match.playerAId) ?? "",
+          playerBId: match.playerBId ? playerIdMap.get(match.playerBId) ?? null : null,
           resultCode: match.resultCode as MatchResultCode,
           isBye: match.isBye,
         },

@@ -126,9 +126,17 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
   return [...rows.values()]
     .sort((left, right) => {
       if (right.matchPoints !== left.matchPoints) return right.matchPoints - left.matchPoints;
-      if (right.omw !== left.omw) return right.omw - left.omw;
-      if (right.gw !== left.gw) return right.gw - left.gw;
-      if (right.ogw !== left.ogw) return right.ogw - left.ogw;
+      for (const tiebreaker of tournament.ruleset.settings.tiebreakerOrder) {
+        const difference =
+          tiebreaker === "OMW"
+            ? right.omw - left.omw
+            : tiebreaker === "GW"
+              ? right.gw - left.gw
+              : right.ogw - left.ogw;
+        if (difference !== 0) {
+          return difference;
+        }
+      }
       return left.fullName.localeCompare(right.fullName, "pt-BR");
     })
     .map((row, index) => ({

@@ -191,19 +191,15 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
                       <td className="px-4 py-3">{formatName(tournament, match.playerAId)}</td>
                       <td className="px-4 py-3">{formatName(tournament, match.playerBId)}</td>
                       <td className="px-4 py-3">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            updateMatch(match.id, match.resultCode === "PENDING" ? "A_WIN_2_0" : "PENDING")
-                          }
-                          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                             match.resultCode === "PENDING"
                               ? "bg-[rgba(250,204,21,0.15)] text-[var(--accent-secondary)]"
                               : "bg-[rgba(34,197,94,0.15)] text-[var(--success)]"
                           }`}
                         >
                           {match.resultCode === "PENDING" ? "Pendente" : "Registrado"}
-                        </button>
+                        </span>
                       </td>
                     </tr>
                   ))}
