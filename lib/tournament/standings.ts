@@ -5,6 +5,7 @@ type InterimRow = Omit<StandingRow, "rank" | "record" | "fullName"> & {
   fullName: string;
   matchesPlayed: number;
   gamesPlayed: number;
+  earnedMatchPoints: number;
 };
 
 function clampFloor(value: number, floor: number) {
@@ -46,6 +47,7 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
       opponents: [],
       matchesPlayed: 0,
       gamesPlayed: 0,
+      earnedMatchPoints: 0,
     });
   }
 
@@ -74,6 +76,7 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
       if (match.isBye && match.resultCode === "BYE") {
         playerA.wins += 1;
         playerA.matchPoints += scoring.byePoints;
+        playerA.earnedMatchPoints += scoring.byePoints;
         playerA.matchesPlayed += 1;
         continue;
       }
@@ -101,25 +104,33 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
           playerA.wins += 1;
           playerB.losses += 1;
           playerA.matchPoints += scoring.winPoints;
+          playerA.earnedMatchPoints += scoring.winPoints;
           playerB.matchPoints += scoring.lossPoints;
+          playerB.earnedMatchPoints += scoring.lossPoints;
           break;
         case "B":
           playerB.wins += 1;
           playerA.losses += 1;
           playerB.matchPoints += scoring.winPoints;
+          playerB.earnedMatchPoints += scoring.winPoints;
           playerA.matchPoints += scoring.lossPoints;
+          playerA.earnedMatchPoints += scoring.lossPoints;
           break;
         case "DRAW":
           playerA.draws += 1;
           playerB.draws += 1;
           playerA.matchPoints += scoring.drawPoints;
           playerB.matchPoints += scoring.drawPoints;
+          playerA.earnedMatchPoints += scoring.drawPoints;
+          playerB.earnedMatchPoints += scoring.drawPoints;
           break;
         case "NONE":
           playerA.losses += 1;
           playerB.losses += 1;
           playerA.matchPoints += scoring.doubleLossPoints;
           playerB.matchPoints += scoring.doubleLossPoints;
+          playerA.earnedMatchPoints += scoring.doubleLossPoints;
+          playerB.earnedMatchPoints += scoring.doubleLossPoints;
           break;
       }
     }
@@ -170,7 +181,10 @@ function applyPercentages(rows: Map<string, InterimRow>, ruleset: TournamentRule
 
   for (const row of rows.values()) {
     const matchWin = row.matchesPlayed
-      ? clampFloor(row.matchPoints / (row.matchesPlayed * maxMatchPoints), ruleset.settings.percentages.minimumMatchWinPercentage)
+      ? clampFloor(
+          row.earnedMatchPoints / (row.matchesPlayed * maxMatchPoints),
+          ruleset.settings.percentages.minimumMatchWinPercentage,
+        )
       : ruleset.settings.percentages.minimumMatchWinPercentage;
     const gameWin = row.gamesPlayed
       ? clampFloor(

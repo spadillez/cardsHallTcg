@@ -40,7 +40,7 @@ npm run seed
 - `components/`: UI interativa do modo Organizer/Scorekeeper.
 - `lib/tournament/`: domínio configurável de torneio (regras, pairings, standings, state machine, demo data).
 - `prisma/schema.prisma`: modelo de dados SaaS/multi-tenant.
-- `tests/`: testes direcionados para pairings e standings.
+- `tests/`: testes direcionados para pairings, standings e state machine.
 
 ## Observações
 

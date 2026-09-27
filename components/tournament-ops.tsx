@@ -85,12 +85,14 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
       return;
     }
 
+    let playerAdded = false;
     setTournament((current) => ({
       ...(() => {
         if (current.players.some((entry) => entry.player.playerId === registrationForm.playerId)) {
           return current;
         }
 
+        playerAdded = true;
         const nextId =
           current.players.reduce((highest, entry) => {
             const suffix = Number(entry.id.replace("tp-", ""));
@@ -121,7 +123,9 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
         };
       })(),
     }));
-    setRegistrationForm({ name: "", playerId: "", birthDate: "" });
+    if (playerAdded) {
+      setRegistrationForm({ name: "", playerId: "", birthDate: "" });
+    }
   }
 
   if (!currentRound) {

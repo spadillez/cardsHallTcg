@@ -51,8 +51,11 @@ function rankEligiblePlayers(tournament: Tournament) {
 }
 
 function chooseBye(players: TournamentPlayer[]) {
-  const candidates = players.filter((player) => !player.hadBye);
-  const pool = candidates.length > 0 ? candidates : players;
+  const eligiblePlayers = players.filter(
+    (player) => player.status !== "DROPPED" && player.status !== "DISQUALIFIED",
+  );
+  const candidates = eligiblePlayers.filter((player) => !player.hadBye);
+  const pool = candidates.length > 0 ? candidates : eligiblePlayers;
   return pool[pool.length - 1];
 }
 
