@@ -56,9 +56,14 @@ export function getResultDefinition(ruleset: TournamentRuleset, resultCode: Matc
 }
 
 export function getTournamentStructure(ruleset: TournamentRuleset, playerCount: number) {
-  return (
-    ruleset.settings.structures.find(
-      (structure) => playerCount >= structure.minPlayers && playerCount <= structure.maxPlayers,
-    ) ?? ruleset.settings.structures[ruleset.settings.structures.length - 1]
+  const matchingStructure = ruleset.settings.structures.find(
+    (structure) => playerCount >= structure.minPlayers && playerCount <= structure.maxPlayers,
   );
+  if (matchingStructure) {
+    return matchingStructure;
+  }
+
+  return playerCount < ruleset.settings.structures[0].minPlayers
+    ? ruleset.settings.structures[0]
+    : ruleset.settings.structures[ruleset.settings.structures.length - 1];
 }

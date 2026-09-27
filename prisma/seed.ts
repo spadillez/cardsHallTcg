@@ -78,6 +78,8 @@ async function main() {
   const tournamentRow = await prisma.tournament.upsert({
     where: { slug: tournament.slug },
     update: {
+      name: tournament.name,
+      format: tournament.format,
       venueId: venue.id,
       rulesetId: persistedRuleset.id,
       state: TournamentState.ROUND_ACTIVE,

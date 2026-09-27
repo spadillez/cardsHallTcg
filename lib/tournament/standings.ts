@@ -71,10 +71,14 @@ export function buildStandings(tournament: Tournament, upToRound?: number): Stan
       playerA.gamesDrawn += gamesDrawn;
       playerA.gamesPlayed += result.gamesWonA + result.gamesWonB + gamesDrawn;
 
-      if (match.isBye || !match.playerBId) {
+      if (match.isBye && match.resultCode === "BYE") {
         playerA.wins += 1;
         playerA.matchPoints += scoring.byePoints;
         playerA.matchesPlayed += 1;
+        continue;
+      }
+
+      if (!match.playerBId) {
         continue;
       }
 

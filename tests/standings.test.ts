@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildDemoTournament } from "@/lib/tournament/demo-data";
 import { buildStandings } from "@/lib/tournament/standings";
+import type { Tournament } from "@/lib/tournament/types";
 
 test("Standings calculate points and order players by points then tiebreakers", () => {
   const tournament = buildDemoTournament();
@@ -29,4 +30,38 @@ test("Completed results update the live standings snapshot", () => {
   assert.ok(playerABefore && playerAAfter && playerBBefore && playerBAfter);
   assert.equal(playerAAfter.matchPoints, playerABefore.matchPoints + 3);
   assert.equal(playerBAfter.matchPoints, playerBBefore.matchPoints);
+});
+
+test("BYE awards configured points and counts as a win", () => {
+  const tournament = buildDemoTournament();
+  const player = tournament.players[0];
+  const byeTournament: Tournament = {
+    ...tournament,
+    players: [player],
+    rounds: [
+      {
+        id: "round-1",
+        number: 1,
+        startedAt: "2026-09-27T11:00:00.000Z",
+        endsAt: "2026-09-27T11:50:00.000Z",
+        status: "COMPLETED",
+        matches: [
+          {
+            id: "bye-match",
+            roundNumber: 1,
+            tableNumber: 11,
+            playerAId: player.player.id,
+            resultCode: "BYE",
+            createdAt: "2026-09-27T11:00:00.000Z",
+            updatedAt: "2026-09-27T11:20:00.000Z",
+            isBye: true,
+          },
+        ],
+      },
+    ],
+  };
+
+  const standings = buildStandings(byeTournament);
+  assert.equal(standings[0].wins, 1);
+  assert.equal(standings[0].matchPoints, tournament.ruleset.settings.scoring.byePoints);
 });
