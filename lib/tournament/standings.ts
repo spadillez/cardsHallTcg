@@ -167,13 +167,13 @@ function applyPercentages(rows: Map<string, InterimRow>, ruleset: TournamentRule
   for (const row of rows.values()) {
     const matchWin = row.matchesPlayed
       ? clampFloor(row.matchPoints / (row.matchesPlayed * maxMatchPoints), ruleset.settings.percentages.minimumMatchWinPercentage)
-      : 0;
+      : ruleset.settings.percentages.minimumMatchWinPercentage;
     const gameWin = row.gamesPlayed
       ? clampFloor(
           (row.gamesWon + row.gamesDrawn * 0.5) / row.gamesPlayed,
           ruleset.settings.percentages.minimumGameWinPercentage,
         )
-      : 0;
+      : ruleset.settings.percentages.minimumGameWinPercentage;
 
     opponentMatchWin.set(row.playerId, matchWin);
     opponentGameWin.set(row.playerId, gameWin);

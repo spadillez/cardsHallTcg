@@ -35,7 +35,7 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
   const currentRound = tournament.rounds[tournament.rounds.length - 1];
   const standings = useMemo(() => buildStandings(tournament), [tournament]);
   const structure = getTournamentStructure(tournament.ruleset, tournament.players.length);
-  const pendingMatches = currentRound.matches.filter((match) => match.resultCode === "PENDING");
+  const pendingMatches = currentRound?.matches.filter((match) => match.resultCode === "PENDING") ?? [];
   const currentPendingMatch = pendingMatches[0];
   const checkedInCount = tournament.players.filter((entry) => entry.status === "CHECKED_IN").length;
 
@@ -85,35 +85,51 @@ export function TournamentOps({ initialTournament }: { initialTournament: Tourna
       return;
     }
 
-    if (tournament.players.some((entry) => entry.player.playerId === registrationForm.playerId)) {
-      return;
-    }
-
-    const nextId = tournament.players.length + 1;
     setTournament((current) => ({
-      ...current,
-      players: [
-        ...current.players,
-        {
-          id: `tp-${nextId}`,
-          player: {
-            id: `player-${nextId}`,
-            fullName: registrationForm.name,
-            playerId: registrationForm.playerId,
-            birthDate: registrationForm.birthDate,
-            category: "MASTER",
-            country: "Brasil",
-            state: "SP",
-            city: "São Paulo",
-          },
-          status: "LATE_REGISTRATION",
-          checkedInAt: new Date().toISOString(),
-          hadBye: false,
-          initialMatchPoints: 0,
-        },
-      ],
+      ...(() => {
+        if (current.players.some((entry) => entry.player.playerId === registrationForm.playerId)) {
+          return current;
+        }
+
+        const nextId = current.players.length + 1;
+        return {
+          ...current,
+          players: [
+            ...current.players,
+            {
+              id: `tp-${nextId}`,
+              player: {
+                id: `player-${nextId}`,
+                fullName: registrationForm.name,
+                playerId: registrationForm.playerId,
+                birthDate: registrationForm.birthDate,
+                category: "MASTER",
+                country: "Brasil",
+                state: "SP",
+                city: "São Paulo",
+              },
+              status: "LATE_REGISTRATION",
+              checkedInAt: new Date().toISOString(),
+              hadBye: false,
+              initialMatchPoints: 0,
+            },
+          ],
+        };
+      })(),
     }));
     setRegistrationForm({ name: "", playerId: "", birthDate: "" });
+  }
+
+  if (!currentRound) {
+    return (
+      <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8">
+        <p className="text-sm uppercase tracking-[0.24em] text-[var(--foreground-muted)]">Organizer / Scorekeeper mode</p>
+        <h2 className="mt-2 text-2xl font-semibold">Torneio sem rodadas geradas</h2>
+        <p className="mt-3 text-[var(--foreground-muted)]">
+          Cadastre jogadores, confirme o check-in e gere a primeira rodada para iniciar a operação.
+        </p>
+      </div>
+    );
   }
 
   return (

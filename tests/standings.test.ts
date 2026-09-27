@@ -14,13 +14,19 @@ test("Standings calculate points and order players by points then tiebreakers", 
 
 test("Completed results update the live standings snapshot", () => {
   const tournament = buildDemoTournament();
-  const before = buildStandings(tournament).map((entry) => ({ id: entry.playerId, points: entry.matchPoints }));
   const pending = tournament.rounds[2].matches.find((match) => match.resultCode === "PENDING");
   assert.ok(pending);
   if (!pending) return;
+  const before = buildStandings(tournament);
+  const playerABefore = before.find((entry) => entry.playerId === pending.playerAId);
+  const playerBBefore = before.find((entry) => entry.playerId === pending.playerBId);
 
   pending.resultCode = "A_WIN_2_0";
-  const after = buildStandings(tournament).map((entry) => ({ id: entry.playerId, points: entry.matchPoints }));
+  const after = buildStandings(tournament);
+  const playerAAfter = after.find((entry) => entry.playerId === pending.playerAId);
+  const playerBAfter = after.find((entry) => entry.playerId === pending.playerBId);
 
-  assert.notDeepEqual(before, after);
+  assert.ok(playerABefore && playerAAfter && playerBBefore && playerBAfter);
+  assert.equal(playerAAfter.matchPoints, playerABefore.matchPoints + 3);
+  assert.equal(playerBAfter.matchPoints, playerBBefore.matchPoints);
 });

@@ -66,12 +66,11 @@ function assignTables(
   const tables = nextTableNumbers(tournament, pairings.length);
   const usedTables = new Set<number>();
   const reservedTables = new Set(tournament.ruleset.settings.reservedTables);
+  const playersById = new Map(tournament.players.map((entry) => [entry.player.id, entry]));
 
   return pairings.map((pairing, index) => {
-    const playerA = tournament.players.find((entry) => entry.player.id === pairing.playerAId);
-    const playerB = pairing.playerBId
-      ? tournament.players.find((entry) => entry.player.id === pairing.playerBId)
-      : undefined;
+    const playerA = playersById.get(pairing.playerAId);
+    const playerB = pairing.playerBId ? playersById.get(pairing.playerBId) : undefined;
     const fixedTable = [playerA?.fixedTable, playerB?.fixedTable].find(
       (tableNumber) => tableNumber && !usedTables.has(tableNumber) && !reservedTables.has(tableNumber),
     );
